@@ -22,6 +22,7 @@ def metadata_extractor(image):
 
 def image_renamer(dossier_images, dossier_sortie, base_nom):
     liste_images = [f"{dossier_images}/{fichier}" for fichier in os.listdir(dossier_images) if
+                    os.path.isfile(os.path.join(dossier_images, fichier)) and
                     re.match(r'.*\.(.*)$', fichier).group(1).lower() in ['png', 'jpeg', 'jpg']]
 
     images = {fichier: metadata_extractor(fichier) for fichier in liste_images if metadata_extractor(fichier) is not None}
@@ -45,7 +46,7 @@ def image_renamer(dossier_images, dossier_sortie, base_nom):
 
 
 if __name__ == '__main__':
-    parser= argparse.ArgumentParser()
+    parser = argparse.ArgumentParser()
     parser.add_argument('dossier_images', type=str, help='Dossier contenant les images à renommer')
     parser.add_argument('-o', '--output', dest='dossier_sortie', type=str, help='Dossier de sortie des données',
                         default=None)
